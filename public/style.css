@@ -1,0 +1,29 @@
+/* Stick table header to sticky navbar */
+/* .container {
+  border: 1px solid black;
+} */
+
+/* On mobile, 100vh is not constant.
+Browsers calculate vh based on the visible viewport height, which shrinks/expands as the address bar and navigation UI hide or reappear while scrolling.
+So if you scroll quickly and the browser UI hides, 100vh suddenly becomes bigger, and if the UI reappears, 100vh shrinks.
+That’s why your element sized in vh seems to jump or resize depending on scroll speed.
+🔧 Fixes / Workarounds
+Use dynamic viewport units (new CSS spec)
+Modern browsers support:
+dvh → dynamic viewport height (same as vh, but updates instantly).
+lvh → large viewport height (when browser UI is hidden).
+svh → small viewport height (when browser UI is visible). */
+.table-wrapper {
+  /* dynamic viewport height (same as vh, but updates instantly). */
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+}
+
+thead th {
+  cursor: pointer;
+}

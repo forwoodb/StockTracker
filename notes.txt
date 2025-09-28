@@ -1,0 +1,6 @@
+ChatGPT Convo:
+https://chatgpt.com/c/68a35fb9-4f70-8323-ae53-61afd82b407a
+
+Packages:
+express ejs mongoose ejsMate bcrypt csv-parse
+

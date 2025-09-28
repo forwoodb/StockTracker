@@ -1,0 +1,64 @@
+<% layout('layouts/boilerplate') %>
+<div class="container">
+  <div class="page-header d-flex justify-content-between align-items-center">
+    <h2>Stocks</h2>
+    <a href="/logout">Log Out</a>
+  </div>
+  <form method="post" action="/createStock" class="mb-5">
+    <div class="mb-3">
+      <label for="ticker" class="form-label">Stock Ticker</label>
+      <input
+        name="ticker"
+        type="text"
+        class="form-control"
+        id="ticker"
+        autofocus
+      />
+    </div>
+    <div class="mb-3">
+      <label for="company" class="form-label">Company</label>
+      <input name="company" type="text" class="form-control" id="company" />
+    </div>
+    <div class="mb-3">
+      <label for="averageCost" class="form-label">Average Cost</label>
+      <input
+        name="averageCost"
+        type="text"
+        class="form-control"
+        id="averageCost"
+      />
+    </div>
+    <button type="submit" class="btn btn-success">Add Stock</button>
+  </form>
+  <table class="table h-25 overflow-y-auto">
+    <thead>
+      <tr>
+        <th scope="col" id="infoTickerCol">Ticker</th>
+        <th scope="col" id="companyName">Company</th>
+        <th scope="col" id="infoAvgCost">Average Cost</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% stocks.forEach(stock => { %>
+      <tr>
+        <td class="ticker"><%= stock['ticker'] %></td>
+        <td><%= stock['company'] %></td>
+        <td><%= stock['averageCost'] %></td>
+        <td>
+          <form action="/editStock/<%= stock['_id'] %>">
+            <button type="submit" class="btn btn-success">Edit</button>
+          </form>
+        </td>
+        <td>
+          <form action="/deleteStock/<%= stock['_id'] %>" method="post">
+            <button type="submit" class="delete btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<% block('script').append('<script type="module" src="home.js"></script>') %>

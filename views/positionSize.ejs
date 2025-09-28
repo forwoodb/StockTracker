@@ -1,0 +1,107 @@
+<% layout('layouts/boilerplate') %>
+<main class="bg-light">
+  <div class="container">
+    <h2>Position Sizes</h2>
+    <div class="d-md-flex mt-3 mb-2">
+      <div class="forms-wrapper">
+        <form action="" method="post" class="p-3 mb-3 me-md-3 bg-white border">
+          <div class="mb-3">
+            <label for="accountBalance" class="form-label"
+              >Account Balance</label
+            >
+            <input
+              name="accountBalance"
+              type="text"
+              class="form-control"
+              id="accountBalance"
+            />
+          </div>
+          <div class="form-text mb-3">
+            Your account balance is stored in the browser, not a database. So
+            you are the only one who sees it.
+          </div>
+          <button class="btn btn-success" id="acc-button">
+            Update Account Balance
+          </button>
+        </form>
+        <form action="" method="post" class="p-3 mb-3 me-md-3 bg-white border">
+          <div class="mb-3">
+            <label for="stopLoss" class="form-label">Stop-Loss %</label>
+            <input
+              name="stopLoss"
+              type="text"
+              class="form-control"
+              id="stopLoss"
+            />
+          </div>
+          <button class="btn btn-success" id="stop-loss-button">
+            Update Stop-Loss
+          </button>
+        </form>
+      </div>
+      <div class="card mb-3 w-75">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <p class="card-text">
+            Account Balance: $<span id="account-balance">0</span>
+          </p>
+          <p class="card-text">
+            Number of Positions: <span id="num-pos">0</span>
+          </p>
+          <p class="card-text">
+            Average Position Size: $<span id="avg-pos-size">0</span>
+          </p>
+          <p class="card-text">Stop-Loss: <span id="stop-loss">0</span>%</p>
+          <a class="btn btn-success" href="/run-python">Update Prices</a>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrapper table-responsive">
+      <table id="data-table" class="table mt-3 table-striped">
+        <thead>
+          <tr>
+            <th scope="col" id="dataTickerCol">Ticker</th>
+            <th scope="col" id="timeCol">Time</th>
+            <th scope="col" id="closeCol">Close</th>
+            <th scope="col" id="tenDCol">10D</th>
+            <th scope="col" id="fiftyDCol">50D</th>
+            <th scope="col" id="avgCostCol">Avg Cost</th>
+            <th scope="col" id="posSizePctCol">% > MA</th>
+            <th scope="col" id="posSizeCol">Position Size</th>
+            <th scope="col" id="entryCol">Entry</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% stockData.forEach(data => { %>
+            <% if (data['position'] === true) { %>
+              <tr>
+                <td><%= data['ticker'] %></td>
+                <td class="time"><%= data["Time"] %></td>
+                <td class="close-price"><%= data['Close'] %></td>
+                <td class="fifty"><%= data['10D'] %></td>
+                <td class="fifty"><%= data['50D'] %></td>
+                <td class="avg-cost"><%= data['averageCost'] %></td>
+                <td class="pct-ma"></td>
+                <td class="pos-size"><%= data['positionSize'] %></td>
+                <td class="entry"></td>
+                <td>
+                  <form action="/editStock/<%= data['_id'] %>">
+                    <button type="submit" class="btn btn-success">Edit</button>
+                  </form>
+                </td>
+                <td>
+                  <form action="/addWatchList/<%= data['_id'] %>" method="post" >
+                    <button type="submit" class="btn btn-success">Watchlist</button>
+                  </form>
+                </td>
+              </tr>
+            <% } %>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<% block('script').append('<script type="module" src="posSize.js"></script>') %>
