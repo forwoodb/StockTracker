@@ -1,9 +1,3 @@
-import dotenv from "dotenv";
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config();
-}
-console.log(process.env.MDB_URL);
-
 import express from "express";
 import ejsMate from "ejs-mate";
 import mongoose from "mongoose";
@@ -12,6 +6,12 @@ import { execFile } from "child_process";
 import fs from "fs";
 import { parse } from "csv-parse/sync";
 import MongoStore from "connect-mongo";
+import dotenv from "dotenv";
+dotenv.config();
+// if (process.env.NODE_ENV !== "production") {
+//   dotenv.config();
+// }
+// console.log(process.env.MDB_URL);
 
 // Routes
 import UserRouter from "./routes/UserRouter.js";
