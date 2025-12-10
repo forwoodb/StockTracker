@@ -13,6 +13,7 @@ const stopLossButton = document.querySelector("#stop-loss-button");
 const stopLossSpan = document.querySelector("#stop-loss");
 
 const avgPos = document.querySelector("#avg-pos-size");
+const maxPos = document.querySelector("#max-pos-size");
 
 // Get values from local storage
 accBalSpan.innerText = localStorage.getItem("accountBalance");
@@ -29,15 +30,21 @@ for (let i = 0; i < rows.length; i++) {
 const avgAmt = Number(accBalSpan.innerText) / Number(numPos.innerText);
 avgPos.innerText = avgAmt.toFixed(2);
 
+// Get Maximum Position Size
+const maxAmt = avgAmt * stopLossPct;
+maxPos.textContent = maxAmt.toFixed(2);
+
 // Sort Table
 sortTable(0);
 sortColumns("dataTickerCol", 0);
 sortColumns("timeCol", 1);
 sortColumns("closeCol", 2);
-sortColumns("avgCostCol", 5);
-sortColumns("posSizePctCol", 6);
-sortColumns("posSizeCol", 7);
-sortColumns("entryCol", 8, "descending");
+sortColumns("avgCostCol", 7);
+sortColumns("posSizePctCol", 8);
+sortColumns("posSizeCol", 9);
+sortColumns("entryCol", 10, "descending");
+
+let entryTotal = 0;
 
 // Calculate Percentage
 rows.forEach((row, i) => {
@@ -45,19 +52,29 @@ rows.forEach((row, i) => {
 
   const ticker = row.cells[0].textContent;
   const close = Number(row.cells[2].textContent);
-  const ten = Number(row.cells[3].textContent);
-  const fifty = Number(row.cells[4].textContent);
-  const avgCost = Number(row.cells[5].textContent);
+  const five = Number(row.cells[3].textContent);
+  const ten = Number(row.cells[4].textContent);
+  const twenty = Number(row.cells[5].textContent);
+  const fifty = Number(row.cells[6].textContent);
+  const avgCost = Number(row.cells[7].textContent);
 
   const movingAverage = (ma, colIndex) => {
     const posSizePct = (((avgCost - ma) / avgCost) * 100).toFixed(2);
     // const posSizePrice = ((stopLossDecimal / posSizePct) * avgAmt).toFixed(2);
     // row.cells[6].textContent = posSizePrice;
-    row.cells[6].textContent = posSizePct;
+    row.cells[8].textContent = posSizePct;
 
     const entryPct = (close - ma) / close;
     const entryPrice = ((stopLossDecimal / entryPct) * avgAmt).toFixed(2);
-    row.cells[8].textContent = entryPrice;
+    row.cells[10].textContent = entryPrice;
+
+    // Get total of all entries
+    if (entryPrice > maxAmt) {
+      entryTotal = entryTotal += Number(maxAmt);
+    } else {
+      entryTotal = entryTotal += Number(entryPrice);
+    }
+    console.log(entryTotal);
 
     // Highlight MA Column
     for (let i = 0; i < row.cells.length; i++) {
@@ -72,20 +89,20 @@ rows.forEach((row, i) => {
     switch (true) {
       case close < ma:
         row.cells[2].style.color = "red";
-        row.cells[7].style.color = "red";
+        row.cells[9].style.color = "red";
         break;
       case close < avgCost:
         row.cells[2].style.color = "orange";
-        row.cells[7].style.color = "orange";
+        row.cells[9].style.color = "orange";
         break;
       default:
         row.cells[2].style.color = "black";
-        row.cells[7].style.color = "black";
+        row.cells[9].style.color = "black";
     }
   };
 
   // Alternate Moving averages
-  const changeMA = (colId = fiftyDCol, ma = fifty, colIndex = 4) => {
+  const changeMA = (colId = fiftyDCol, ma = fifty, colIndex = 5) => {
     const column = document.getElementById(colId);
     // console.log("DEBUG", ticker, close, ten, fifty, avgCost);
 
@@ -94,9 +111,11 @@ rows.forEach((row, i) => {
     });
   };
 
-  movingAverage(ten, 3);
-  changeMA("fiftyDCol", fifty, 4);
-  changeMA("tenDCol", ten, 3);
+  movingAverage(ten, 4);
+  changeMA("fiveDCol", five, 3);
+  changeMA("tenDCol", ten, 4);
+  changeMA("twentyDCol", twenty, 5);
+  changeMA("fiftyDCol", fifty, 6);
 });
 
 // Update account balance

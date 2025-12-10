@@ -36,14 +36,20 @@ for stock in collection.find():
   df['50D'] = df['Close'].tail(50).mean()
   df['50D'] = df['50D'].round(2)
 
+  df['20D'] = df['Close'].tail(20).mean()
+  df['20D'] = df['20D'].round(2)
+
   df['10D'] = df['Close'].tail(10).mean()
   df['10D'] = df['10D'].round(2)
+  
+  df['5D'] = df['Close'].tail(5).mean()
+  df['5D'] = df['5D'].round(2)
 
   df['Time'] = datetime.now().strftime("%H:%M:%S")
 
   df = df.tail(1)
 
-  df = df[['ticker', 'Time', 'Close', '10D', '50D']]
+  df = df[['ticker', 'Time', 'Close', '5D', '10D', '20D', '50D']]
   df_data = pd.concat([df_data, df], ignore_index=True)
 
 # print(df_data)

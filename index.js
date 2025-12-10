@@ -1,9 +1,14 @@
+import dotenv from "dotenv";
+if (process.env.NODE_ENF !== "production") {
+  dotenv.config();
+}
+console.log(process.env.MDB_URL);
+
 import express from "express";
 import ejsMate from "ejs-mate";
-import path from "path";
 import mongoose from "mongoose";
 import session from "express-session";
-import { execFile, spawn } from "child_process";
+import { execFile } from "child_process";
 import fs from "fs";
 import { parse } from "csv-parse/sync";
 import MongoStore from "connect-mongo";
@@ -17,7 +22,9 @@ import { Stock } from "./models/Stock.js";
 const app = express();
 
 // Database
-const dbUrl = "mongodb://localhost:27017/positionSize";
+// const dbUrl = process.env.LDB_URL;
+const dbUrl = process.env.MDB_URL;
+
 mongoose
   .connect(dbUrl)
   .then(() => console.log("MongoDB connected"))
@@ -112,7 +119,9 @@ app.get("/run-python", async (req, res) => {
 });
 
 // Server
-const port = 3002;
+const port = process.env.PORT || 3002;
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
+
+// q84ItPYwNm77gfFO

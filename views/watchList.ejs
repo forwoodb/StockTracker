@@ -51,6 +51,9 @@
             Average Position Size: $<span id="avg-pos-size">0</span>
           </p>
           <p class="card-text">Stop-Loss: <span id="stop-loss">0</span>%</p>
+          <p class="card-text">
+            Maximum Position Size: $<span id="max-pos-size">0</span>
+          </p>
           <a class="btn btn-success" href="/run-python">Update Prices</a>
         </div>
       </div>
@@ -62,7 +65,9 @@
             <th scope="col" id="dataTickerCol">Ticker</th>
             <th scope="col" id="timeCol">Time</th>
             <th scope="col" id="closeCol">Close</th>
+            <th scope="col" id="fiveDCol">5D</th>
             <th scope="col" id="tenDCol">10D</th>
+            <th scope="col" id="twentyDCol">20D</th>
             <th scope="col" id="fiftyDCol">50D</th>
             <th scope="col" id="avgCostCol">Avg Cost</th>
             <th scope="col" id="posSizePctCol">% > MA</th>
@@ -79,7 +84,9 @@
                 <td><%= data['ticker'] %></td>
                 <td class="time"><%= data["Time"] %></td>
                 <td class="close-price"><%= data['Close'] %></td>
+                <td class="fifty"><%= data['5D'] %></td>
                 <td class="fifty"><%= data['10D'] %></td>
+                <td class="fifty"><%= data['20D'] %></td>
                 <td class="fifty"><%= data['50D'] %></td>
                 <td class="avg-cost"><%= data['averageCost'] %></td>
                 <td class="pct-ma"></td>

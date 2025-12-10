@@ -30,6 +30,7 @@ router.post("/createStock", async (req, res) => {
 router.get("/editStock/:id", async (req, res) => {
   const id = req.params.id;
   const stock = await Stock.findById(id);
+  // res.send(stock);
   res.render("editStock", { stock });
 });
 
@@ -57,6 +58,7 @@ router.post("/addPosition/:id", async (req, res) => {
 router.post("/addWatchList/:id", async (req, res) => {
   const id = req.params.id;
   await Stock.findByIdAndUpdate(id, {
+    positionSize: 0,
     averageCost: 0,
     watchList: true,
     position: false,
