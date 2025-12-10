@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-if (process.env.NODE_ENF !== "production") {
+if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 console.log(process.env.MDB_URL);
@@ -123,5 +123,3 @@ const port = process.env.PORT || 3002;
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
-
-// q84ItPYwNm77gfFO
